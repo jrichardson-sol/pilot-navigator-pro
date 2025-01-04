@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { DashboardHeader } from "@/components/Dashboard/DashboardHeader";
 import { MetricsOverview } from "@/components/Dashboard/MetricsOverview";
 import { ProjectCard } from "@/components/Dashboard/ProjectCard";
+import { ActivityTracker } from "@/components/Dashboard/ActivityTracker";
+import { NewProjectForm } from "@/components/Dashboard/NewProjectForm";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const navigate = useNavigate();
+  const [isNewProjectDialogOpen, setIsNewProjectDialogOpen] = useState(false);
   
   const pilotProjects = [
     {
@@ -46,8 +48,11 @@ const Index = () => {
         <MetricsOverview />
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Pilot Projects</h2>
-          <Button onClick={() => navigate("/project/new")}>
-            <Plus className="mr-2" />
+          <Button 
+            onClick={() => setIsNewProjectDialogOpen(true)}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            <Plus className="mr-2 h-4 w-4" />
             New Project
           </Button>
         </div>
@@ -56,7 +61,12 @@ const Index = () => {
             <ProjectCard key={project.title} {...project} />
           ))}
         </div>
+        <ActivityTracker />
       </div>
+      <NewProjectForm 
+        isOpen={isNewProjectDialogOpen}
+        onClose={() => setIsNewProjectDialogOpen(false)}
+      />
     </div>
   );
 };
