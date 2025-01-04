@@ -34,7 +34,7 @@ export const ProjectCard = ({ title, industry, progress, risk, teamSize }: Proje
 
   return (
     <Card 
-      className="hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      className="hover:shadow-lg transition-all duration-200 cursor-pointer transform hover:-translate-y-1 active:translate-y-0"
       onClick={handleClick}
     >
       <CardHeader className="pb-2">
