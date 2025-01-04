@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, TrendingUp, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
   title: string;
@@ -12,6 +13,8 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({ title, industry, progress, risk, teamSize }: ProjectCardProps) => {
+  const navigate = useNavigate();
+
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case "low":
@@ -25,8 +28,15 @@ export const ProjectCard = ({ title, industry, progress, risk, teamSize }: Proje
     }
   };
 
+  const handleClick = () => {
+    navigate(`/project/${encodeURIComponent(title)}`);
+  };
+
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
+    <Card 
+      className="hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      onClick={handleClick}
+    >
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
