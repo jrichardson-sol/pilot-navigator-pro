@@ -16,9 +16,9 @@ export const ProjectDetailsHeader = ({ title }: { title: string }) => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink as={Link} to="/">
+              <Link to="/" className="hover:underline">
                 Dashboard
-              </BreadcrumbLink>
+              </Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
