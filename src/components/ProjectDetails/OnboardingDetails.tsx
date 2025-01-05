@@ -95,6 +95,7 @@ export const OnboardingDetails = ({ isEditing, editedData, setEditedData }: Onbo
                         selected={editedData.endDate}
                         onSelect={(date) => handleDateChange('endDate', date)}
                         initialFocus
+                        disabled={(date) => date < editedData.startDate}
                       />
                     </PopoverContent>
                   </Popover>
