@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { AlertTriangle, Users, Calendar as CalendarIcon, Target, Edit2, Save, X } from "lucide-react";
+import { AlertTriangle, Calendar as CalendarIcon, Edit2, Save, X } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { ProjectHeader } from "./ProjectHeader";
+import { ProjectProgress } from "./ProjectProgress";
+import { TeamMembers } from "./TeamMembers";
 
 interface ProjectDetailsContentProps {
   industry: string;
@@ -31,6 +31,7 @@ export const ProjectDetailsContent = ({
     progress,
     risk,
     teamSize,
+    teamMembers: [],
     startDate: new Date(),
     endDate: new Date(Date.now() + 7776000000), // 90 days from now
     objective: "Initial project objective",
@@ -52,7 +53,15 @@ export const ProjectDetailsContent = ({
   };
 
   const handleSave = () => {
-    // In a real app, this would be an API call
+    if (editedData.endDate < editedData.startDate) {
+      toast({
+        title: "Error",
+        description: "End date cannot be earlier than start date",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Success",
       description: "Project details updated successfully!",
@@ -83,72 +92,24 @@ export const ProjectDetailsContent = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Industry</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {isEditing ? (
-              <Input
-                value={editedData.industry}
-                onChange={(e) => setEditedData({ ...editedData, industry: e.target.value })}
-                className="w-full"
-              />
-            ) : (
-              <Badge variant="secondary" className="text-lg">
-                {industry}
-              </Badge>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Progress</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>{isEditing ? (
-                  <Input
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={editedData.progress}
-                    onChange={(e) => setEditedData({ ...editedData, progress: parseInt(e.target.value) })}
-                    className="w-20"
-                  />
-                ) : (
-                  `${progress}% Complete`
-                )}</span>
-                <Target className="h-4 w-4" />
-              </div>
-              <Progress value={isEditing ? editedData.progress : progress} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Team</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              {isEditing ? (
-                <Input
-                  type="number"
-                  min="1"
-                  value={editedData.teamSize}
-                  onChange={(e) => setEditedData({ ...editedData, teamSize: parseInt(e.target.value) })}
-                  className="w-20"
-                />
-              ) : (
-                <span>{teamSize} Members</span>
-              )}
-              <Users className="h-4 w-4" />
-            </div>
-          </CardContent>
-        </Card>
+        <ProjectHeader
+          industry={industry}
+          isEditing={isEditing}
+          editedData={editedData}
+          setEditedData={setEditedData}
+        />
+        <ProjectProgress
+          progress={progress}
+          isEditing={isEditing}
+          editedData={editedData}
+          setEditedData={setEditedData}
+        />
+        <TeamMembers
+          teamSize={teamSize}
+          isEditing={isEditing}
+          editedData={editedData}
+          setEditedData={setEditedData}
+        />
       </div>
 
       <Card>
@@ -167,11 +128,12 @@ export const ProjectDetailsContent = ({
                         {format(editedData.startDate, "PPP")}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
                         selected={editedData.startDate}
                         onSelect={(date) => date && setEditedData({ ...editedData, startDate: date })}
+                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -182,11 +144,12 @@ export const ProjectDetailsContent = ({
                         {format(editedData.endDate, "PPP")}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="single"
                         selected={editedData.endDate}
                         onSelect={(date) => date && setEditedData({ ...editedData, endDate: date })}
+                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
