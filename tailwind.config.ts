@@ -25,15 +25,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#1E40AF",
-          foreground: "#FFFFFF",
+          DEFAULT: "#FF9900", // Amazon Orange
+          foreground: "#000000", // Black text on orange
         },
         secondary: {
-          DEFAULT: "#0D9488",
+          DEFAULT: "#232F3E", // Amazon Navy
           foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#D97706",
+          DEFAULT: "#37475A", // Amazon Dark Gray
           foreground: "#FFFFFF",
         },
         destructive: {
@@ -41,8 +41,8 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#F5F5F5", // Light Gray
+          foreground: "#232F3E",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
